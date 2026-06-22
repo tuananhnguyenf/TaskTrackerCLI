@@ -137,3 +137,6 @@ _NCrunch*
 
 # env
 .env
+
+# .json file with data
+tasks.json
