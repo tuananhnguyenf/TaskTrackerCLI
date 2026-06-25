@@ -6,6 +6,7 @@ public class TaskTracker
 
     private const string FILE_NAME = "tasks.json";
 
+    public static int nextId = 1;
 
     public TaskTracker()
     {
@@ -20,6 +21,11 @@ public class TaskTracker
         List<Task>? tasks = JsonSerializer.Deserialize<List<Task>>(json) ?? [];
 
         Tasks = tasks;
+
+        if (tasks.Count > 0)
+        {
+            nextId = tasks.Max(task => task.Id) + 1;
+        }
     }
 
     private void WriteToFile()

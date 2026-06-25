@@ -2,8 +2,7 @@ using System;
 
 public class Task(string description)
 {
-    private static int IdCounter = 1;
-    public int Id { get; set; } = IdCounter++;
+    public int Id { get; set; } = TaskTracker.nextId;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     public string Description { get; set; } = description;
