@@ -40,6 +40,19 @@ public class TaskTracker
         return newTask;
     }
 
+    public void UpdateTask(int taskId, string newDescription)
+    {
+        Task? foundTask = Tasks.Find(task => task.Id == taskId);
+
+        if (foundTask == null)
+        {
+            return;
+        }
+
+        foundTask.ChangeDescription(newDescription);
+        WriteToFile();
+    }
+
     private static string StatusToString(TaskStatus status)
     {
         switch (status)

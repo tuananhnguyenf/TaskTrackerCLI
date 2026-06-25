@@ -54,6 +54,36 @@ public static class Program
         }
     }
 
+    private static void HandleUpdate(string[] args)
+    {
+        if (args.Length < 2)
+        {
+            Console.WriteLine("No ID passed. Exiting...");
+            return;
+        }
+
+        if (args.Length < 3)
+        {
+            Console.WriteLine("No new description passed. Exiting...");
+            return;
+        }
+
+        int taskId;
+
+        try
+        {
+            taskId = int.Parse(args[1]);
+        }
+        catch
+        {
+            Console.WriteLine("[ERROR] ID must be a number. Exiting...");
+            return;
+        }
+
+        string newDescription = args[2];
+        tracker.UpdateTask(taskId, newDescription);
+    }
+
     public static void Main(string[] args)
     {
         if (args.Length == 0)
@@ -71,6 +101,9 @@ public static class Program
                 break;
             case "list":
                 HandleList(args);
+                break;
+            case "update":
+                HandleUpdate(args);
                 break;
             default:
                 Console.WriteLine("Unknown command. Exiting...");
