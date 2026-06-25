@@ -30,12 +30,14 @@ public class TaskTracker
         writer.Write(jsonString);
     }
 
-    public void AddTask(string taskDescription)
+    public Task AddTask(string taskDescription)
     {
         Task newTask = new(taskDescription);
 
         Tasks.Add(newTask);
         WriteToFile();
+
+        return newTask;
     }
 
     private static string StatusToString(TaskStatus status)

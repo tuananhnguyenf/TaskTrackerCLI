@@ -14,7 +14,8 @@ public static class Program
 
         string description = args[1];
 
-        tracker.AddTask(description);
+        var newTask = tracker.AddTask(description);
+        Console.WriteLine($"Task added successfully (ID: {newTask.Id})");
     }
 
     private static void HandleList(string[] args)
