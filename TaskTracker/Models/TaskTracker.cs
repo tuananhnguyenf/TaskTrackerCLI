@@ -59,6 +59,12 @@ public class TaskTracker
         WriteToFile();
     }
 
+    public void DeleteTask(int taskId)
+    {
+        Tasks = [.. Tasks.Where(task => task.Id != taskId)];
+        WriteToFile();
+    }
+
     private static string StatusToString(TaskStatus status)
     {
         switch (status)

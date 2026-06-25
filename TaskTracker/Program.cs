@@ -84,6 +84,29 @@ public static class Program
         tracker.UpdateTask(taskId, newDescription);
     }
 
+    private static void HandleDelete(string[] args)
+    {
+        if (args.Length < 2)
+        {
+            Console.WriteLine("No ID passed. Exiting...");
+            return;
+        }
+
+        int taskId;
+
+        try
+        {
+            taskId = int.Parse(args[1]);
+        }
+        catch
+        {
+            Console.WriteLine("[ERROR] ID must be a number. Exiting...");
+            return;
+        }
+
+        tracker.DeleteTask(taskId);
+    }
+
     public static void Main(string[] args)
     {
         if (args.Length == 0)
@@ -104,6 +127,9 @@ public static class Program
                 break;
             case "update":
                 HandleUpdate(args);
+                break;
+            case "delete":
+                HandleDelete(args);
                 break;
             default:
                 Console.WriteLine("Unknown command. Exiting...");
