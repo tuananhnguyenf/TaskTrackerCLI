@@ -37,4 +37,34 @@ public class TaskTracker
         Tasks.Add(newTask);
         WriteToFile();
     }
+
+    private static string StatusToString(TaskStatus status)
+    {
+        switch (status)
+        {
+            case TaskStatus.TODO:
+                return "TODO";
+            case TaskStatus.IN_PROGRESS:
+                return "IN_PROGRESS";
+            case TaskStatus.DONE:
+                return "DONE";
+            default:
+                return "";
+        }
+    }
+
+    private static string PrintTask(Task task)
+    {
+        return $"- {task.Description}: {StatusToString(task.Status)}";
+    }
+
+    public IEnumerable<string> ListTasks()
+    {
+        return Tasks.Select(PrintTask);
+    }
+
+    public IEnumerable<string> ListTasks(TaskStatus filterStatus)
+    {
+        return Tasks.Where(task => task.Status == filterStatus).Select(PrintTask);
+    }
 }

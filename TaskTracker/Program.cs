@@ -2,7 +2,9 @@
 
 public static class Program
 {
-    private static void HandleAdd(TaskTracker tracker, string[] args)
+    private static readonly TaskTracker tracker = new();
+
+    private static void HandleAdd(string[] args)
     {
         if (args.Length != 2)
         {
@@ -15,6 +17,42 @@ public static class Program
         tracker.AddTask(description);
     }
 
+    private static void HandleList(string[] args)
+    {
+        IEnumerable<string> tasks;
+
+        if (args.Length == 1)
+        {
+            tasks = tracker.ListTasks();
+        }
+        else
+        {
+            var filter = args[1];
+
+            switch (filter)
+            {
+                case "todo":
+                    tasks = tracker.ListTasks(TaskStatus.TODO);
+                    break;
+                case "in-progress":
+                    tasks = tracker.ListTasks(TaskStatus.IN_PROGRESS);
+                    break;
+                case "done":
+                    tasks = tracker.ListTasks(TaskStatus.DONE);
+                    break;
+                default:
+                    tasks = [];
+                    break;
+            }
+        }
+
+
+        foreach (var task in tasks)
+        {
+            Console.WriteLine(task);
+        }
+    }
+
     public static void Main(string[] args)
     {
         if (args.Length == 0)
@@ -23,14 +61,15 @@ public static class Program
             return;
         }
 
-        TaskTracker tracker = new();
-
         string command = args[0].ToLower();
 
         switch (command)
         {
             case "add":
-                HandleAdd(tracker, args);
+                HandleAdd(args);
+                break;
+            case "list":
+                HandleList(args);
                 break;
             default:
                 Console.WriteLine("Unknown command. Exiting...");
