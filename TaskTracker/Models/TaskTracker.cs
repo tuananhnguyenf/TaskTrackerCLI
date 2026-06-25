@@ -55,7 +55,7 @@ public class TaskTracker
 
     private static string PrintTask(Task task)
     {
-        return $"- {task.Description}: {StatusToString(task.Status)}";
+        return $"- (ID: {task.Id}) {task.Description}: {StatusToString(task.Status)}";
     }
 
     public IEnumerable<string> ListTasks()
