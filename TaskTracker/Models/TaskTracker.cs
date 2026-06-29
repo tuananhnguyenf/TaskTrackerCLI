@@ -65,6 +65,19 @@ public class TaskTracker
         WriteToFile();
     }
 
+    public void MarkTask(int taskId, TaskStatus newStatus)
+    {
+        Task? foundTask = Tasks.Find(task => task.Id == taskId);
+
+        if (foundTask == null)
+        {
+            return;
+        }
+
+        foundTask.ChangeStatus(newStatus);
+        WriteToFile();
+    }
+
     private static string StatusToString(TaskStatus status)
     {
         switch (status)
@@ -72,11 +85,24 @@ public class TaskTracker
             case TaskStatus.TODO:
                 return "TODO";
             case TaskStatus.IN_PROGRESS:
-                return "IN_PROGRESS";
+                return "IN PROGRESS";
             case TaskStatus.DONE:
                 return "DONE";
             default:
                 return "";
+        }
+    }
+
+    public static TaskStatus StringToStatus(string status)
+    {
+        switch (status)
+        {
+            case "in-progress":
+                return TaskStatus.IN_PROGRESS;
+            case "done":
+                return TaskStatus.DONE;
+            default:
+                return TaskStatus.TODO;
         }
     }
 

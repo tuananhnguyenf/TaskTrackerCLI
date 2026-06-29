@@ -54,6 +54,19 @@ public static class Program
         }
     }
 
+    private static int? ParseTaskId(string input)
+    {
+        try
+        {
+            return int.Parse(input);
+        }
+        catch
+        {
+            Console.WriteLine("[ERROR] ID must be a number. Exiting...");
+            return null;
+        }
+    }
+
     private static void HandleUpdate(string[] args)
     {
         if (args.Length < 2)
@@ -68,20 +81,14 @@ public static class Program
             return;
         }
 
-        int taskId;
-
-        try
+        int? taskId = ParseTaskId(args[1]);
+        if (taskId == null)
         {
-            taskId = int.Parse(args[1]);
-        }
-        catch
-        {
-            Console.WriteLine("[ERROR] ID must be a number. Exiting...");
             return;
         }
 
         string newDescription = args[2];
-        tracker.UpdateTask(taskId, newDescription);
+        tracker.UpdateTask(taskId.Value, newDescription);
     }
 
     private static void HandleDelete(string[] args)
@@ -92,19 +99,32 @@ public static class Program
             return;
         }
 
-        int taskId;
-
-        try
+        int? taskId = ParseTaskId(args[1]);
+        if (taskId == null)
         {
-            taskId = int.Parse(args[1]);
-        }
-        catch
-        {
-            Console.WriteLine("[ERROR] ID must be a number. Exiting...");
             return;
         }
 
-        tracker.DeleteTask(taskId);
+        tracker.DeleteTask(taskId.Value);
+    }
+
+    private static void HandleMark(string command, string[] args)
+    {
+        if (args.Length < 2)
+        {
+            Console.WriteLine("No ID passed. Exiting...");
+            return;
+        }
+
+        int? taskId = ParseTaskId(args[1]);
+        if (taskId == null)
+        {
+            return;
+        }
+
+        var newStatus = command.Split('-', 2)[1];
+
+        tracker.MarkTask(taskId.Value, TaskTracker.StringToStatus(newStatus));
     }
 
     public static void Main(string[] args)
@@ -117,23 +137,36 @@ public static class Program
 
         string command = args[0].ToLower();
 
-        switch (command)
+        if (command == "add")
         {
-            case "add":
-                HandleAdd(args);
-                break;
-            case "list":
-                HandleList(args);
-                break;
-            case "update":
-                HandleUpdate(args);
-                break;
-            case "delete":
-                HandleDelete(args);
-                break;
-            default:
-                Console.WriteLine("Unknown command. Exiting...");
-                return;
+            HandleAdd(args);
+            return;
         }
+
+        if (command == "list")
+        {
+            HandleList(args);
+            return;
+        }
+
+        if (command == "update")
+        {
+            HandleUpdate(args);
+            return;
+        }
+
+        if (command == "delete")
+        {
+            HandleDelete(args);
+            return;
+        }
+
+        if (command.StartsWith("mark-"))
+        {
+            HandleMark(command, args);
+            return;
+        }
+
+        Console.WriteLine("Unknown command. Exiting...");
     }
 }
